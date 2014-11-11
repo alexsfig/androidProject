@@ -39,9 +39,9 @@ public class MyActivity extends ActionBarActivity implements
         }
     }
     @Override
-    public void onItemSelected(String nombre) {
+    public void onItemSelected(Pokemon pokemon) {
         Intent detailIntent = new Intent(this, PokemonDetailActivity.class);
-        detailIntent.putExtra("nombre", nombre);
+        detailIntent.putExtra("pokemon", pokemon);
         startActivity(detailIntent);
     }
 

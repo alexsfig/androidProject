@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 public class PokemonDetailActivity extends ActionBarActivity {
 
-    private String mCurrentNombre;
+    private Pokemon mpokemon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +21,13 @@ public class PokemonDetailActivity extends ActionBarActivity {
         }
 
         if (savedInstanceState != null) {
-            mCurrentNombre = savedInstanceState.getString("mCurrentNombre");
+            mpokemon = savedInstanceState.getParcelable("pokemon");
         } else {
-            String nombre = getIntent().getStringExtra("nombre");
-            mCurrentNombre = nombre;
+            Pokemon pokemon = getIntent().getParcelableExtra("pokemon");
+            mpokemon = pokemon;
         }
 
-        PokemonDetailFragment fragment = PokemonDetailFragment.newInstance(mCurrentNombre);
+        PokemonDetailFragment fragment = PokemonDetailFragment.newInstance(mpokemon);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.pokemon_detail_container, fragment).commit();
     }
@@ -36,7 +36,7 @@ public class PokemonDetailActivity extends ActionBarActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("mCurrentNombre", mCurrentNombre);
+        outState.putParcelable("pokemon", mpokemon);
     }
 
     @Override
