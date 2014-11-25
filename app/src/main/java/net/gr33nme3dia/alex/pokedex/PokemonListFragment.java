@@ -2,6 +2,7 @@ package net.gr33nme3dia.alex.pokedex;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import java.util.List;
  */
 public class PokemonListFragment extends Fragment {
 
+    private static final String STATE_ACTIVATED_POSITION = "activated_position";
     private ProgressBar progressBar;
     private ListView listPokemon;
     private PokemonAdapter pokemonAdapter;
@@ -85,10 +87,33 @@ public class PokemonListFragment extends Fragment {
         return rootView;
     }
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+            setActivatedPosition(savedInstanceState
+                    .getInt(STATE_ACTIVATED_POSITION));
+        }
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
+    public void setActivateOnItemClick(boolean activateOnItemClick) {
+        listPokemon.setChoiceMode(
+                activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
+                        : ListView.CHOICE_MODE_NONE);
+    }
+
+    public void setActivatedPosition(int position) {
+        if (position == ListView.INVALID_POSITION) {
+            listPokemon.setItemChecked(0, false);
+        } else {
+            listPokemon.setItemChecked(position, true);
+        }
+    }
+
 
     public void runTask(){
 //        PokemonListApiTask pokemonListApiTask = new PokemonListApiTask(pokemonAdapter,listPokemon,progressBar);

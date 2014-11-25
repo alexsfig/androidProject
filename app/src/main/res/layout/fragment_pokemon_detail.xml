@@ -2,18 +2,27 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/textview_pokemon_nombre"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/hello_blank_fragment"
+        android:textAlignment="center"
+        android:textStyle="bold|italic"
+        android:textSize="20dp"
+        android:gravity="center_vertical"
+        android:layout_weight="0.13"
+        android:textColor="#ff101482"
+        android:textIsSelectable="false"
+        android:singleLine="false" />
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center"/>
 
 
 </LinearLayout>
