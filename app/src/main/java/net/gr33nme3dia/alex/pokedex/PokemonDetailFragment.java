@@ -132,16 +132,12 @@ public class PokemonDetailFragment extends Fragment {
         else if(id == R.id.action_gallery){
             File myDir=new File("/sdcard/Download");
             FileOutputStream out = null;
-            myDir.mkdirs();
-            Random generator = new Random();
-            int n = 10000;
-            n = generator.nextInt(n);
-            String fname = "Image-"+ n +".jpg";
+            String fname = mpokemon.getNombre() + ".jpg";
             File file = new File (myDir, fname);
             if (file.exists ()) file.delete ();
             try {
                 out = new FileOutputStream(file);
-                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             } catch (Exception e) {
                 e.printStackTrace();
             }finally {
