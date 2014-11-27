@@ -1,6 +1,7 @@
 package net.gr33nme3dia.alex.pokedex;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -16,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -30,6 +34,7 @@ public class PokemonDetailFragment extends Fragment {
     private String mnombre;
     private String mavatar;
     private Pokemon mpokemon;
+    private ImageView imageView;
 
     public static PokemonDetailFragment newInstance(Pokemon pokemon) {
         PokemonDetailFragment fragment = new PokemonDetailFragment();
@@ -58,16 +63,28 @@ public class PokemonDetailFragment extends Fragment {
                 container, false);
 
         TextView nombre = (TextView)rootView.findViewById(R.id.textview_pokemon_nombre);
-        ImageView imageView = (ImageView)rootView.findViewById(R.id.imageView3);
+        imageView = (ImageView)rootView.findViewById(R.id.imageView3);
         if ( mpokemon != null){
-            if (TextUtils.isEmpty(mpokemon.getAvatar()) || mpokemon.getAvatar() == null)
-                Picasso.with(getActivity()).load(R.drawable.ic_launcher).error(R.drawable.ic_launcher).into(imageView);
-            else
-                Picasso.with(getActivity()).load(mpokemon.getAvatar()).error(R.drawable.ic_launcher).into(imageView);
+            ImageRequest request = new ImageRequest(mpokemon.getAvatar(),
+                    new Response.Listener<Bitmap>(){
+                        @Override
+                        public void onResponse(Bitmap bitmap) {
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    }, 0, 0, null,
+                    new Response.ErrorListener() {
+                        public void onErrorResponse(VolleyError error) {
+                            imageView.setImageResource(R.drawable.ic_launcher);
+                        }
+                    });
+            PokedexApplication.getInstance().addToRequestQueue(request);
             nombre.setText(mpokemon.getNombre());
         }
         return rootView;
     }
+
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.pokemon_detail, menu);
