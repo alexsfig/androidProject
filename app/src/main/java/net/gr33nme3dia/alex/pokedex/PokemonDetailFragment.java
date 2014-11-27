@@ -2,6 +2,7 @@ package net.gr33nme3dia.alex.pokedex;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -22,6 +23,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Random;
+
 /**
  * Created by alex on 10/31/14.
  */
@@ -35,6 +41,7 @@ public class PokemonDetailFragment extends Fragment {
     private String mavatar;
     private Pokemon mpokemon;
     private ImageView imageView;
+    private Bitmap mBitmap;
 
     public static PokemonDetailFragment newInstance(Pokemon pokemon) {
         PokemonDetailFragment fragment = new PokemonDetailFragment();
@@ -65,10 +72,12 @@ public class PokemonDetailFragment extends Fragment {
         TextView nombre = (TextView)rootView.findViewById(R.id.textview_pokemon_nombre);
         imageView = (ImageView)rootView.findViewById(R.id.imageView3);
         if ( mpokemon != null){
-            ImageRequest request = new ImageRequest(mpokemon.getAvatar(),
+            mavatar = mpokemon.getAvatar();
+            ImageRequest request = new ImageRequest(mavatar,
                     new Response.Listener<Bitmap>(){
                         @Override
                         public void onResponse(Bitmap bitmap) {
+                            mBitmap = bitmap;
                             imageView.setImageBitmap(bitmap);
                         }
                     }, 0, 0, null,
@@ -112,6 +121,49 @@ public class PokemonDetailFragment extends Fragment {
             NavUtils.navigateUpFromSameTask(getActivity());
             return true;
         }
+        else if(id == R.id.action_view){
+            if(mpokemon!=null && mpokemon.getAvatar()!=null && mpokemon.getAvatar().length()>0){
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(mpokemon.getAvatar()));
+                startActivity(intent);
+                return true;
+            }
+        }
+        else if(id == R.id.action_gallery){
+            File myDir=new File("/sdcard/Download");
+            FileOutputStream out = null;
+            myDir.mkdirs();
+            Random generator = new Random();
+            int n = 10000;
+            n = generator.nextInt(n);
+            String fname = "Image-"+ n +".jpg";
+            File file = new File (myDir, fname);
+            if (file.exists ()) file.delete ();
+            try {
+                out = new FileOutputStream(file);
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Intent intent = new Intent();
+            Uri uri = Uri.fromFile(file);
+
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setDataAndType(uri, "image/*");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            return true;
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
