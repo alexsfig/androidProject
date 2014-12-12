@@ -9,6 +9,31 @@ import android.os.Parcelable;
 public class Pokemon implements Parcelable {
     private String nombre;
     private String avatar;
+    private String altura;
+    private String peso;
+
+    public Pokemon(String charizard, String s, String v, String v1) {
+        this.nombre = charizard;
+        this.avatar = s;
+        this.altura = v;
+        this.peso = v1;
+    }
+
+    public String getPeso() {
+        return peso;
+    }
+
+    public void setPeso(String peso) {
+        this.peso = peso;
+    }
+
+    public String getAltura() {
+        return altura;
+    }
+
+    public void setAltura(String altura) {
+        this.altura = altura;
+    }
 
     public String getNombre() {
         return nombre;

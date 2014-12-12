@@ -27,7 +27,7 @@ public class PokedexDbHelper extends SQLiteOpenHelper {
                 PokemonEntry.COLUMN_NUMERO + " INTEGER NOT NULL," +
                 PokemonEntry.COLUM_ALTURA + " REAL NOT NULL," +
                 PokemonEntry.COLUM_PESO + " REAL NOT NULL );";
-        final String SQL_CREATE_LUGAR_TABLE =" CREATE TABLE"+ LugarEntry.TABLE_NAME +"(" +
+        final String SQL_CREATE_LUGAR_TABLE =" CREATE TABLE "+ LugarEntry.TABLE_NAME +"(" +
                 LugarEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 LugarEntry.COLUMN_LATITUD + " REAL NOT NULL," +
                 LugarEntry.COLUMN_LONGITUD + " REAL NOT NULL," +
