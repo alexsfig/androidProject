@@ -3,6 +3,7 @@ package net.gr33nme3dia.alex.pokedex;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -42,6 +43,7 @@ public class PokemonDetailFragment extends Fragment {
     private Pokemon mpokemon;
     private ImageView imageView;
     private Bitmap mBitmap;
+    private String url;
 
     public static PokemonDetailFragment newInstance(Pokemon pokemon) {
         PokemonDetailFragment fragment = new PokemonDetailFragment();
@@ -130,33 +132,38 @@ public class PokemonDetailFragment extends Fragment {
             }
         }
         else if(id == R.id.action_gallery){
-            File myDir=new File("/sdcard/Download");
-            FileOutputStream out = null;
-            String fname = mpokemon.getNombre() + ".jpg";
-            File file = new File (myDir, fname);
-            if (file.exists ()) file.delete ();
-            try {
-                out = new FileOutputStream(file);
-                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                try {
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (mpokemon != null && mpokemon.getAvatar() != null && mpokemon.getAvatar().length() > 0) {
+                url = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), mBitmap,mpokemon.getNombre(),"");
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
             }
-            Intent intent = new Intent();
-            Uri uri = Uri.fromFile(file);
-
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, "image/*");
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            return true;
+//            File myDir=new File("/sdcard/Download");
+//            FileOutputStream out = null;
+//            String fname = mpokemon.getNombre() + ".jpg";
+//            File file = new File (myDir, fname);
+//            if (file.exists ()) file.delete ();
+//            try {
+//                out = new FileOutputStream(file);
+//                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }finally {
+//                try {
+//                    if (out != null) {
+//                        out.close();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            Intent intent = new Intent();
+//            Uri uri = Uri.fromFile(file);
+//
+//            intent.setAction(Intent.ACTION_VIEW);
+//            intent.setDataAndType(uri, "image/*");
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            return true;
         }
 
 
