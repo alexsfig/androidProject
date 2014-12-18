@@ -1,7 +1,10 @@
 package net.gr33nme3dia.alex.pokedex;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -9,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,16 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Random;
+import java.util.Locale;
 
 /**
  * Created by alex on 10/31/14.
@@ -44,12 +40,14 @@ public class PokemonDetailFragment extends Fragment {
     private ImageView imageView;
     private Bitmap mBitmap;
     private String url;
-
+    private Location loc;
+    
     public static PokemonDetailFragment newInstance(Pokemon pokemon) {
         PokemonDetailFragment fragment = new PokemonDetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_POKEMON, pokemon);
         fragment.setArguments(args);
+        
         return fragment;
     }
     public PokemonDetailFragment() {
@@ -164,6 +162,13 @@ public class PokemonDetailFragment extends Fragment {
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //            startActivity(intent);
 //            return true;
+
+        else if (id == R.id.action_maps){
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+            String uri = String.format(Locale.ENGLISH, "geo:%f,%f", 13.6929400, -89.2181910);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            startActivity(intent);
         }
 
 
